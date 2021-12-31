@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <a href="/logout/ADMIN">logout</a>
+  {% if data|length == 0 %}
+                   
+  <div class="alert alert-dark" role="alert">
+      No Query to display
+    </div>
+    {% else %} 
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">SRno</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Message</th>
+            <th scope="col">Reply</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for noti in data %}
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{noti.name}}</td>
+            <td>{{noti.email}}</td>
+            <td>{{noti.msg}}</td>
+            <td><input type="text" name="reply" id=""></td>
+            <td><button type="submit">Send mail</button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+</body>
+</html>
