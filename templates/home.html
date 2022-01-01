@@ -143,6 +143,13 @@ body{
       </div>
     </nav>
   <br>
+  {% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         <p style="background-color: aliceblue;color: #333; text-align: center;">{{ message }}</p>
+      {% endfor %}
+   {% endif %}
+{% endwith %}
   <div class="font-monospace" style="    display: block;
   /* margin: 50% 50%; */
   padding: 70px;

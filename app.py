@@ -28,9 +28,19 @@ def home():
     return render_template("home.html")
 
 
-@app.route("/Cuslog")
+@app.route("/Cuslog", methods=['GET','POST'])
 def customer_login():
-    return render_template("customer_login.html")
+    if(request.method == "POST"):
+        email=request.form.get("email")
+        password=request.form.get("passwd")
+        q=User.query.filter_by(email=email).first()
+        if(q and q.passwd==password):
+            return"Welcome"
+        else:
+            flash("*Incorrect Email or Password")
+            return redirect(url_for("customer_login"))
+    else:
+        return render_template("customer_login.html")
 
 
 @app.route("/adlog", methods=['GET','POST'])
@@ -41,16 +51,14 @@ def admin_login():
         if(email== "ADMIN" and password == "adpassword"):
             session["admin"] = email
             return render_template("adsuc.html",uname=session['admin'])
+        else:
+            flash("*Incorrect Email or Password")
+            return redirect(url_for("admin_login"))
     return render_template("admin_login.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=['GET','POST'])
 def contact():
-    return render_template("contact.html")
-
-
-@app.route("/cdetail", methods=['GET','POST'])
-def contact_return():
     if (request.method=='POST'):
         name=request.form.get("name")
         email=request.form.get("email")
@@ -58,9 +66,10 @@ def contact_return():
         query=Contact(name=name,email=email,msg=msg)
         db.session.add(query)
         db.session.commit()
-        return "submit done"
+        flash("Your message is send to admin panel you will be notified soon")
+        return redirect(url_for("home"))
     else:
-        return redirect(url_for('home'))
+        return render_template("contact.html")
 
 
 @app.route("/notcontact")
