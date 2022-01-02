@@ -20,8 +20,6 @@ class User(db.Model):
     Gender = db.Column(db.String(1), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     
-    
-    
 
 @app.route("/")
 def home():
@@ -89,6 +87,26 @@ def logout(sess):
     else:
         session.pop(sess, None)
     return redirect(url_for('home'))
+
+
+@app.route("/adduser",methods=["GET","POST"])
+def adduser():
+    if (request.method=='POST'):
+        name=request.form.get("name")
+        email=request.form.get("email")
+        passwd=request.form.get("passwd")
+        gender=request.form.get("gender")
+        age=request.form.get("age")
+        q=User(name=name,email=email,passwd=passwd,Gender=gender,age=age)
+        db.session.add(q)
+        db.session.commit()
+        flash("New user added successfully")
+        return render_template("adsuc.html")
+
+    else:
+        if not session.get("admin"):
+            return render_template("illegal.html")
+        return render_template("add_user.html") 
 
 if __name__=="__main__":
     app.run(debug=True)
